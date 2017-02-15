@@ -1,0 +1,25 @@
+<% provide :title, "View news" %>
+
+<%= link_to raw("<span class='glyphicon glyphicon-arrow-left'></span> Go back"),
+  admin_news_index_path, class: "btn btn-info" %>
+
+<h1>News Info</h1>
+
+<table class="table table-bordered">
+  <tr>
+    <td>Title</td>
+    <td><%= @news.title %></td>
+  </tr>
+  <tr>
+    <td>Category</td>
+    <td><%= link_to @news.category.name, admin_category_path(@news.category) %></td>
+  </tr>
+  <tr>
+    <td>Content</td>
+    <td><%= @news.content %></td>
+  </tr>
+  <tr>
+    <td>Author</td>
+    <td><%= @news.author %></td>
+  </tr>
+</table>

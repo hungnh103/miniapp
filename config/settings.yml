@@ -1,0 +1,5 @@
+admin:
+  category:
+    per_page: 10
+  news:
+    per_page: 7

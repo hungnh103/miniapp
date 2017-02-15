@@ -1,0 +1,8 @@
+<% provide :title, "Edit category" %>
+<% @submit = "Edit cate" %>
+
+<%= link_to raw("<span class='glyphicon glyphicon-arrow-left'></span> Go back"),
+  admin_categories_path, class: "btn btn-info" %>
+
+<h1>Edit Category</h1>
+<%= render "form" %>

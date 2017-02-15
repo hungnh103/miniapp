@@ -1,0 +1,72 @@
+<% provide :title, "Manage News" %>
+
+<div class="col-md-3 row">
+  <%= link_to raw("<span class='glyphicon glyphicon-plus'></span> Add News"),
+    new_admin_news_path, class: "btn btn-primary" %>
+</div>
+
+<!-- ransack -->
+<div class="col-md-9 col-md-offset-3 row">
+  <%= search_form_for [:admin, @search] do |f| %>
+    <div class="col-md-6">
+      <%= f.search_field :title_or_content_cont, class: "form-control", placeholder: "Search by ransack..." %>
+    </div>
+    <div class="col-md-3 select-tag">
+      <%= f.select :category_id_eq, options_for_select(@categories
+        .collect{|category| [category.name, category.id]}, params[:q]), include_blank: "All" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.submit "Search", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<br><br><br><br>
+<div class="search-result">
+  <% if params[:q].present? && params[:q][:title_or_content_cont].present? %>
+    Found '<strong><%= pluralize @search.result.size, "result" %></strong>'
+  <% end %>
+</div>
+<br><br>
+<table class="table table-hover table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Category</th>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Author</th>
+      <th>Created at</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @news.present? %>
+      <% @news.each_with_index do |news, index| %>
+        <tr>
+          <td>
+            <% params[:page] ||= "1" %>
+            <%= get_index params[:page], index, Settings.admin.news.per_page %>
+          </td>
+          <td><%= news.category.name %></td>
+          <td><%= link_to news.title, admin_news_path(news) %></td>
+          <td><%= news.content %></td>
+          <td><%= news.author %></td>
+          <td><%= l news.created_at, format: :long %></td>
+          <td>
+            <%= link_to raw("<span class='glyphicon glyphicon-edit'></span>"),
+              edit_admin_news_path(news), class: "btn btn-warning" %>
+          </td>
+          <td>
+            <%= link_to raw("<span class='glyphicon glyphicon-trash'></span>"), [:admin, news], method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="8" class="table-no-data">No data</td></tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @news, theme: "twitter-bootstrap-4" %>

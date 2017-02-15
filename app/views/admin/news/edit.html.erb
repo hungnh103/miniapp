@@ -1,0 +1,28 @@
+<% provide :title, "Edit news" %>
+
+<%= link_to raw("<span class='glyphicon glyphicon-arrow-left'></span> Go back"),
+  admin_news_index_path, class: "btn btn-info" %>
+
+<h1>Edit news</h1>
+
+<%= form_for [:admin, @news] do |f| %>
+  <%= render "shared/error_messages", object: f.object %>
+
+  <%= f.label :category_id, "Category" %>
+  <div class="select-tag">
+    <%= f.select :category_id, options_for_select(@categories.collect{|category|
+      [category.name, category.id]}, params[:category_id]) %>
+  </div>
+  <br>
+  <%= f.label :title %>
+  <%= f.text_field :title, class: "form-control" %>
+
+  <%= f.label :content %>
+  <%= f.text_area :content, rows: 5, class: "form-control" %>
+
+  <%= f.label :author %>
+  <%= f.text_field :author, class: "form-control" %>
+
+  <%= button_tag raw("<span class='glyphicon glyphicon-hand-right'></span> edit news"),
+    class: "btn btn-primary" %>
+<% end %>
